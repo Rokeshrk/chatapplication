@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "target": "es2017",
+    "target": "es2017",
+    "target": "es2017",
     "types": [
       "@types/react-modal"
     ]
+    // other TypeScript compiler options
     ,
     "lib": [
       "dom",

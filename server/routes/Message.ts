@@ -17,6 +17,9 @@ export const messageRouter = s.router(messageContract, {
 
         const conversation = await findConversation(conversationId.toString());
 
+        console.log(conversation,'conversation');
+        
+
         if (!conversation) {
           return {
             status: 404,

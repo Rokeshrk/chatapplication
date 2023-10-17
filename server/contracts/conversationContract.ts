@@ -5,7 +5,7 @@ const c = initContract();
 
 const conversationInput = z.object({
     name:z.string(),
-    participants:z.array(z.object({id:z.number()}))
+    participants:z.array(z.number())
 })
 
 const deleteInput = z.object({userId:z.number()})

@@ -10,6 +10,7 @@ const prisma = new PrismaClient()
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { checkAuth } from "../middleware/auth";
+import { string } from "zod";
 
 export const loginRouter = s.router(loginContract, {
     login: async ({ body }) => {
@@ -37,7 +38,8 @@ export const loginRouter = s.router(loginContract, {
             }
             const payload = {
                 user: {
-                    id: user.id
+                    id: user.id,
+                    username:user.username
                 }
             };
             const token = jwt.sign(payload, 'jwtSecret', { expiresIn: '5 days' });
@@ -70,10 +72,9 @@ export const loginRouter = s.router(loginContract, {
         }
 
         const User = await prisma.user.findUnique({
-            where:{
-                id: userId,
-            },
+            where:{id:userId},
             select:{
+                id:true,
                 username:true,
                 email:true,
                 profilePicture:true,
@@ -98,11 +99,11 @@ export const loginRouter = s.router(loginContract, {
 export const singupRouter = s.router(signupContract, {
     signup: async ({ body }) => {
         try {
-            const { username, email, password } = body;
+            const { username, email, password, profilePicture } = body;
 
             const user = await prisma.user.findUnique({
                 where: {
-                    email: email
+                    email
                 }
             })
 
@@ -118,7 +119,8 @@ export const singupRouter = s.router(signupContract, {
                 data: {
                     username: username,
                     email: email,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    profilePicture: profilePicture,
                 }
             });
 
@@ -138,6 +140,8 @@ export const singupRouter = s.router(signupContract, {
 
         }
         catch (err) {
+            console.log("errr...",err);
+            
             return {
                 status: 500,
                 body: "Signup server error"
@@ -146,3 +150,5 @@ export const singupRouter = s.router(signupContract, {
     }
 
 })
+
+

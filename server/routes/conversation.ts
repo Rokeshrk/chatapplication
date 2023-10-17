@@ -20,7 +20,8 @@ export const conversationRouter = s.router(conversationContract, {
           data: {
             name,
             participants: {
-              connect: participants
+              connect: participants.map((participant: number) => ({
+                id: participant})),
             }
           },
           include: {
@@ -29,8 +30,8 @@ export const conversationRouter = s.router(conversationContract, {
         })
         const userConversation = await prisma.userConversation.createMany({
           data:
-            participants.map((participant: { id: number }) => ({
-              userId: participant.id,
+            participants.map((participant: number) => ({
+              userId: participant,
               conversationId: conversation.id,
             })),
         })

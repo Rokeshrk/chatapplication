@@ -16,7 +16,7 @@ export const messageContract = c.router({
             200: z.object({
                 id: z.number(),
                 text: z.string(),
-                senderId:z.number(),
+                senderId:z.string(),
                 conversationId: z.number(),
                 createdAt: z.date(),
                 }),
@@ -34,7 +34,7 @@ export const messageContract = c.router({
                     z.object({
                     id: z.number(),
                     text: z.string(),
-                    senderId: z.number()
+                    senderId: z.string()
                     })
                 ),
                 lastFetched: z.date().optional(),

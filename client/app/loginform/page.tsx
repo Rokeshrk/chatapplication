@@ -8,26 +8,34 @@ import AuthAnimationData from "../../asserts/animation/auth-page-animation.json"
 //import { loginUser } from '../action/api/api';
 import {client} from "../../api/client"
 
+interface loginData {
+  email: string;
+  password: string;
+}
 
 const LoginForm: React.FC = () => {
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
   });
+
   const handleLogin = async () => {
     try {
       const token = await loginUser(loginData);
-      alert('Login successful! Token: ' + token);
+      if (token) {
+        // Save the token in local storage
+        localStorage.setItem('authToken', token);
+        alert('Login successful! Token: ' + token);
+        console.log(token);
+      } else {
+        alert('Login failed. No token received.');
+      }
     } catch (error) {
       alert(error.message);
     }
   };
-
-  interface loginData {
-    email: string;
-    password: string;
-  }
-
+  
+  
   async function loginUser(loginData: loginData){
     const result = await client.login.login({body: loginData})
     console.log(result);
@@ -70,6 +78,7 @@ const LoginForm: React.FC = () => {
                 setLoginData({ ...loginData, email: e.target.value })
               }
               className="h-10 border border-gray-300 rounded px-3 focus:outline-none focus:border-blue-500"
+              required
             />
           </div>
 
@@ -84,6 +93,7 @@ const LoginForm: React.FC = () => {
                 setLoginData({ ...loginData, password: e.target.value })
               }
               className="h-10 border border-gray-300 rounded px-3 focus:outline-none focus:border-blue-500"
+              required
             />
           </div>
 
@@ -99,7 +109,7 @@ const LoginForm: React.FC = () => {
               id="Signup"
               value="Sign Up"
             /> */}
-            <Link href="/display">
+            <Link href="/dashboard">
             <button onClick={handleLogin} className="signin-group flex items-center justify-center space-x-10 bg-blue-500 text-white hover:bg-blue-600 transition duration-300 ease-in-out h-10 px-40 rounded cursor-pointer">Login</button></Link>
             <span className="res hidden text-center text-green-500">Logged in successfully</span>
           </div>

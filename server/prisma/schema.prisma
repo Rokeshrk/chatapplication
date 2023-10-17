@@ -15,7 +15,7 @@ model User {
   username         String
   email            String             @unique
   password         String
-  profilePicture   String             @default("")
+  profilePicture   String
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   conversations    Conversation[]     @relation("participants")
